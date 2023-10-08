@@ -26,7 +26,7 @@ export class FixedWindow {
     }
 
     //Check token count
-    if (userWindow.count < DEFAULT_REQUEST_LIMIT) {
+    if (userWindow.count < this.requestLimit) {
       userWindow.count++;
       console.log(
         `Refresh Log:\nuser_id:${userId}\ntoken:${userWindow.count}\nallowed_until:${userWindow.startTime}\ncurrent:${currentMs}`
