@@ -2,6 +2,7 @@ const DEFAULT_TOKEN = 10;
 const DEFAULT_TOKEN_RENEWAL_MS = 5000;
 const DEFAULT_EXPIRATION = 1000 * 30;
 
+//TODO: Add mutex to ensure there are no race conditions
 /**First one is timerId for clean up and second one is activity timestamp in ms*/
 type ActivityMap = [Timer, number];
 
@@ -55,6 +56,11 @@ export class TokenBucket {
 
   public removeToken = (userId: string) => {
     const tokenInUsersBucket = this.checkIfUserInBucket(userId);
+
+    if (tokenInUsersBucket <= 0) {
+      console.log(`No tokens to remove for ${userId}`);
+      return;
+    }
 
     this.userTokenBucket.set(userId, tokenInUsersBucket - 1);
     console.log(`remove:${userId}]:${tokenInUsersBucket - 1}`);

@@ -1,8 +1,10 @@
 import { Hono } from "hono";
 import { prettyJSON } from "hono/pretty-json";
-import { TokenBucket } from "./rate-limiters/token-bucket";
+import { FixedWindow } from "./rate-limiters/fixed-window";
 
-const rateLimiter = new TokenBucket();
+// const rateLimiter = new TokenBucket();
+const rateLimiter = new FixedWindow();
+
 const app = new Hono();
 app.get("/", (c) => c.text("PONG"));
 
@@ -10,11 +12,11 @@ app.get("/", (c) => c.text("PONG"));
 app.use("*", prettyJSON());
 
 app.use("/limited/:id", async (context, next) => {
-  const currentToken = rateLimiter.startRateLimitingForUser(context.req.param("id"));
-  if (currentToken === 0) {
+  const userId = context.req.param("id");
+  const isAllowed = rateLimiter.isRequestAllowed(userId);
+  if (!isAllowed) {
     return context.text("Too many requests!", 429);
   }
-  rateLimiter.removeToken(context.req.param("id"));
   await next();
 });
 
