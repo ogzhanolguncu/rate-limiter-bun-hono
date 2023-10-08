@@ -1,9 +1,10 @@
 import { Hono } from "hono";
 import { prettyJSON } from "hono/pretty-json";
-import { FixedWindow } from "./rate-limiters/fixed-window";
+import { SlidingWindowLog } from "./rate-limiters/sliding-window-log";
 
 // const rateLimiter = new TokenBucket();
-const rateLimiter = new FixedWindow();
+// const rateLimiter = new FixedWindow();
+const rateLimiter = new SlidingWindowLog();
 
 const app = new Hono();
 app.get("/", (c) => c.text("PONG"));
