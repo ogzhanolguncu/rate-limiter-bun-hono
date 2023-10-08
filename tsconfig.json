@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    /* Base Options: */
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "target": "es2022",
+    "verbatimModuleSyntax": true,
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "moduleDetection": "force",
+    "forceConsistentCasingInFileNames": true,
+    /* Strictness */
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+
+    /* If NOT transpiling with TypeScript: */
+    "moduleResolution": "Bundler",
+    "module": "ESNext",
+    "noEmit": true,
+
+    /* If your code doesn't run in the DOM: */
+    "lib": ["ESNext"],
+    "types": [
+      "bun-types" // add Bun global
+    ]
+  }
+}
