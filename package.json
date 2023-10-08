@@ -11,5 +11,8 @@
   "scripts": {
     "watch": "bun --watch run index.ts",
     "build": "bun build ./index.ts --outdir ./out"
+  },
+  "dependencies": {
+    "hono": "^3.7.5"
   }
 }
