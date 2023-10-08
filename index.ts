@@ -1,17 +1,21 @@
 import { Hono } from "hono";
 import { prettyJSON } from "hono/pretty-json";
+import { TokenBucket } from "./rate-limiters/token-bucket";
 
+const rateLimiter = new TokenBucket();
 const app = new Hono();
 app.get("/", (c) => c.text("PONG"));
 
 //Middlewares
 app.use("*", prettyJSON());
 
-//Listen limited requests to rate limit
-app.use("/limited/:id", async (_, next) => {
-  console.log("middleware 1 start");
+app.use("/limited/:id", async (context, next) => {
+  const currentToken = rateLimiter.startRateLimitingForUser(context.req.param("id"));
+  if (currentToken === 0) {
+    return context.text("Too many requests!", 429);
+  }
+  rateLimiter.removeToken(context.req.param("id"));
   await next();
-  console.log("middleware 1 end");
 });
 
 app.get("/unlimited/:id", (c) => {

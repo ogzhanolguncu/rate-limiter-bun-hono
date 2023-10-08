@@ -10,7 +10,8 @@
   },
   "scripts": {
     "watch": "bun --watch run index.ts",
-    "build": "bun build ./index.ts --outdir ./out"
+    "build": "bun build ./index.ts --outdir ./out",
+    "hot": "bun --hot run index.ts"
   },
   "dependencies": {
     "hono": "^3.7.5"
