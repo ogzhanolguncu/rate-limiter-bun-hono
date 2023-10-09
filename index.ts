@@ -1,6 +1,5 @@
 import { Hono } from "hono";
 import { prettyJSON } from "hono/pretty-json";
-import { SlidingWindowLog } from "./rate-limiters/sliding-window-log";
 import { SlidingWindowCounter } from "./rate-limiters/sliding-window-counter";
 
 // const rateLimiter = new TokenBucket();
