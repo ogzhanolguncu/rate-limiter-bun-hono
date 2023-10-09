@@ -1,11 +1,11 @@
 import { Hono } from "hono";
 import { prettyJSON } from "hono/pretty-json";
-import { SlidingWindowCounter } from "./rate-limiters/sliding-window-counter";
+import { SlidingWindowCounterUpstashRedis } from "./rate-limiters/sliding-window-counter-upstash-redis";
 
 // const rateLimiter = new TokenBucket();
 // const rateLimiter = new FixedWindow();
 // const rateLimiter = new SlidingWindowLog();
-const rateLimiter = new SlidingWindowCounter();
+const rateLimiter = new SlidingWindowCounterUpstashRedis();
 
 const app = new Hono();
 app.get("/", (c) => c.text("PONG"));
@@ -15,7 +15,7 @@ app.use("*", prettyJSON());
 
 app.use("/limited/:id", async (context, next) => {
   const userId = context.req.param("id");
-  const isAllowed = rateLimiter.isRequestAllowed(userId);
+  const isAllowed = await rateLimiter.isRequestAllowed(userId);
   if (!isAllowed) {
     return context.text("Too many requests!", 429);
   }

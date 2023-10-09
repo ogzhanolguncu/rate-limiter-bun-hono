@@ -14,6 +14,7 @@
     "hot": "bun --hot run index.ts"
   },
   "dependencies": {
+    "@upstash/redis": "^1.22.1",
     "hono": "^3.7.5"
   }
 }
